@@ -30,6 +30,8 @@ The demo form is front-end only. It validates the entered details and displays a
 5. Responsive layouts keep the dashboard, pricing cards, navigation, and form usable on small screens.
 6. The demo form checks required fields and email format, then shows an inline success state without a backend.
 
-## Technologies
+## Technologies used
 
-HTML, CSS, and vanilla JavaScript.
+- HTML5 for the page structure
+- CSS3 for styling and responsive layouts
+- Vanilla JavaScript for navigation, pricing, and form interactions
