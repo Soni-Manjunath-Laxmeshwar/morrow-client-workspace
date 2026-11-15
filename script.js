@@ -47,33 +47,43 @@ const formMessage = document.querySelector('#form-message');
 
 if (demoForm && formMessage) {
   const fields = [...demoForm.querySelectorAll('input, select')];
+  const nameField = demoForm.querySelector('[name="name"]');
 
   fields.forEach((field) => {
-    field.addEventListener('input', () => field.classList.remove('invalid'));
-    field.addEventListener('change', () => field.classList.remove('invalid'));
+    const clearFieldError = () => {
+      field.classList.remove('invalid');
+      field.removeAttribute('aria-invalid');
+      formMessage.textContent = '';
+      formMessage.classList.remove('error', 'success');
+    };
+
+    field.addEventListener('input', clearFieldError);
+    field.addEventListener('change', clearFieldError);
   });
 
   demoForm.addEventListener('submit', (event) => {
     event.preventDefault();
     formMessage.textContent = '';
-    formMessage.classList.remove('error');
+    formMessage.classList.remove('error', 'success');
 
     let firstInvalidField = null;
     fields.forEach((field) => {
       const valid = field.checkValidity();
       field.classList.toggle('invalid', !valid);
+      field.setAttribute('aria-invalid', String(!valid));
       if (!valid && !firstInvalidField) firstInvalidField = field;
     });
 
     if (firstInvalidField) {
-      formMessage.textContent = 'Please check the details above and try again.';
+      formMessage.textContent = 'Please complete the highlighted fields so we know how to reach you.';
       formMessage.classList.add('error');
       firstInvalidField.focus();
       return;
     }
 
-    const name = demoForm.elements.name.value.trim().split(/\s+/)[0];
-    formMessage.textContent = `Thanks, ${name}. Your details look good. Nothing was sent in this demo.`;
+    const firstName = nameField.value.trim().split(/\s+/)[0];
+    formMessage.textContent = `Thanks, ${firstName}. Your request is ready. This demo doesn't send your details, so no walkthrough has been booked.`;
+    formMessage.classList.add('success');
     demoForm.reset();
   });
 }
